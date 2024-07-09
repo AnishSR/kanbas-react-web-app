@@ -14,6 +14,11 @@ export default function Labs() {
         <Route path="Lab2" element={<Lab2 />} />
         <Route path="Lab3" element={<Lab3 />} />
       </Routes>
+      <br />
+      <a id="wd-github" href="https://github.com/AnishSR/kanbas-react-web-app">
+        GitHub Repository
+      </a> 
+      <p>Full Name: Anish Rao</p>
     </div>
   );
 }
