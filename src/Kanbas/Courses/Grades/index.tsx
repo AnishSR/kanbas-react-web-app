@@ -1,6 +1,30 @@
+import { useParams } from 'react-router-dom';
 import { FaSearch, FaUpload, FaDownload, FaFilter } from "react-icons/fa";
+import enrollmentsData from "../../Database/enrollments.json";
+import usersData from "../../Database/users.json";
+import assignmentsData from "../../Database/assignments.json";
+import gradesData from "../../Database/grades.json";
 
 export default function Grades() {
+  const { cid } = useParams<{ cid: string }>();
+
+  const enrolled = enrollmentsData
+    .filter(enrollment => enrollment.course === cid)
+    .map(enrollment => usersData.find(user => user._id === enrollment.user))
+    .filter(user => user); 
+
+  const assignments = assignmentsData.filter(assignment => assignment.course === cid);
+
+  const grades = gradesData.filter(grade => assignments.some(assignment => assignment._id === grade.assignment));
+
+  if (!enrolled.length) {
+    return <div>No students found for this course.</div>;
+  }
+
+  if (!assignments.length) {
+    return <div>No assignments found for this course.</div>;
+  }
+
   return (
     <div id="wd-grades" className="p-4">
       <h3>Grades</h3>
@@ -53,57 +77,23 @@ export default function Grades() {
           <thead>
             <tr>
               <th>Student Name</th>
-              <th>A1 SETUP</th>
-              <th>A2 HTML</th>
-              <th>A3 CSS</th>
-              <th>A4 BOOTSTRAP</th>
+              {assignments.map((assignment, index) => (
+                <th key={index}>{assignment.title}</th>
+              ))}
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td>Jane Adams</td>
-              <td>100%</td>
-              <td>96.67%</td>
-              <td>92.18%</td>
-              <td>66.22%</td>
-            </tr>
-            <tr>
-              <td>Christina Allen</td>
-              <td>100%</td>
-              <td>100%</td>
-              <td>100%</td>
-              <td>100%</td>
-            </tr>
-            <tr>
-              <td>Samreen Ansari</td>
-              <td>100%</td>
-              <td>100%</td>
-              <td>100%</td>
-              <td>100%</td>
-            </tr>
-            <tr>
-              <td>Han Bao</td>
-              <td>100%</td>
-              <td>100%</td>
-              <td>
-                <input type="number" className="form-control" defaultValue="88.03" />
-              </td>
-              <td>98.99%</td>
-            </tr>
-            <tr>
-              <td>Mahi Sai Srinivas Bobbili</td>
-              <td>100%</td>
-              <td>96.67%</td>
-              <td>98.37%</td>
-              <td>100%</td>
-            </tr>
-            <tr>
-              <td>Siran Cao</td>
-              <td>100%</td>
-              <td>100%</td>
-              <td>100%</td>
-              <td>100%</td>
-            </tr>
+            {enrolled.map((student, index) => (
+              <tr key={index}>
+                <td>{student ? `${student.firstName} ${student.lastName}` : 'Unknown User'}</td>
+                {assignments.map((assignment, idx) => {
+                  const grade = grades.find(g => g.student === student?._id && g.assignment === assignment._id);
+                  return (
+                    <td key={idx}>{grade ? `${grade.grade}%` : 'No grade'}</td>
+                  );
+                })}
+              </tr>
+            ))}
           </tbody>
         </table>
       </div>

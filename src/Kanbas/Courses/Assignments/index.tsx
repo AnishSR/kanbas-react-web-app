@@ -1,7 +1,12 @@
+import { useParams } from "react-router-dom";
 import { FaSearch, FaPlus } from "react-icons/fa";
 import { MdAssignment } from "react-icons/md";
+import assignmentsData from "../../Database/assignments.json";
 
 export default function Assignments() {
+  const { cid } = useParams();
+  const assignments = assignmentsData.filter(assignment => assignment.course === cid);
+
   return (
     <div id="wd-assignments" className="flex-grow-1 p-3">
       <div className="d-flex justify-content-between align-items-center mb-3">
@@ -29,42 +34,21 @@ export default function Assignments() {
         ASSIGNMENTS 40% of Total
       </h3>
       <ul id="wd-assignment-list" className="list-unstyled">
-        <li className="wd-assignment-list-item p-3 mb-2 border-start border-5 border-success">
-          <a
-            className="wd-assignment-link text-decoration-none text-dark fw-bold"
-            href="#/Kanbas/Courses/1234/Assignments/123"
-          >
-            <MdAssignment className="me-2" />
-            A1 - ENV + HTML
-          </a>
-          <p className="mb-0 text-muted">
-            Multiple Modules | <strong>Not available until</strong> May 6 at 12:00 am | <strong>Due</strong> May 13 at 11:59 pm | 100 pts
-          </p>
-        </li>
-        <li className="wd-assignment-list-item p-3 mb-2 border-start border-5 border-success">
-          <a
-            className="wd-assignment-link text-decoration-none text-dark fw-bold"
-            href="#/Kanbas/Courses/1234/Assignments/124"
-          >
-            <MdAssignment className="me-2" />
-            A2 - CSS + BOOTSTRAP
-          </a>
-          <p className="mb-0 text-muted">
-            Multiple Modules | <strong>Not available until</strong> May 13 at 12:00 am | <strong>Due</strong> May 20 at 11:59 pm | 100 pts
-          </p>
-        </li>
-        <li className="wd-assignment-list-item p-3 mb-2 border-start border-5 border-success">
-          <a
-            className="wd-assignment-link text-decoration-none text-dark fw-bold"
-            href="#/Kanbas/Courses/1234/Assignments/125"
-          >
-            <MdAssignment className="me-2" />
-            A3 - JAVASCRIPT + REACT
-          </a>
-          <p className="mb-0 text-muted">
-            Multiple Modules | <strong>Not available until</strong> May 20 at 12:00 am | <strong>Due</strong> May 27 at 11:59 pm | 100 pts
-          </p>
-        </li>
+        {assignments.map(assignment => (
+          <li key={assignment._id} className="wd-assignment-list-item p-3 mb-2 border-start border-5 border-success">
+            <a
+              className="wd-assignment-link text-decoration-none text-dark fw-bold"
+              href={`#/Kanbas/Courses/${cid}/Assignments/${assignment._id}`}
+            >
+              <MdAssignment className="me-2" />
+              {assignment.title}
+            </a>
+            <p className="mb-0 text-muted">
+              Multiple Modules | <strong>Due</strong> {assignment.dueDate}| {assignment.points} pts | 
+            </p>
+            <p> <strong>Description:</strong> {assignment.description}</p>
+          </li>
+        ))}
       </ul>
     </div>
   );

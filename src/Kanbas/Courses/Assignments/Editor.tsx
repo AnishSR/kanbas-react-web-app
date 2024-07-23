@@ -1,21 +1,34 @@
+import { useParams, Link } from "react-router-dom";
+import assignmentsData from "../../Database/assignments.json";
+
+
 export default function AssignmentEditor() {
+  const { cid, id } = useParams();
+  const assignment = assignmentsData.find(assignment => assignment._id === id);
+  /*
+  console.log("the id is", id)
+  */
+  if (!assignment) {
+    return <div>Assignment not found</div>;
+  }
+  
   return (
     <div id="wd-assignments-editor" className="p-4">
       <h3>Assignment Editor</h3>
       <div className="mb-3">
         <label htmlFor="wd-name" className="form-label">Assignment Name</label>
-        <input id="wd-name" className="form-control" defaultValue="A1 - ENV + HTML" />
+        <input id="wd-name" className="form-control" defaultValue={assignment.title} />
       </div>
       <div className="mb-3">
         <label htmlFor="wd-description" className="form-label">Description</label>
         <textarea id="wd-description" className="form-control">
-          The assignment is available online. Submit a link to the landing page of
+          {assignment.description}
         </textarea>
       </div>
       <div className="row mb-3">
         <div className="col-md-6">
           <label htmlFor="wd-points" className="form-label">Points</label>
-          <input id="wd-points" className="form-control" defaultValue={100} />
+          <input id="wd-points" className="form-control" defaultValue={assignment.points} />
         </div>
         <div className="col-md-6">
           <label htmlFor="wd-group" className="form-label">Assignment Group</label>
@@ -72,17 +85,17 @@ export default function AssignmentEditor() {
         </div>
         <div className="col-md-6">
           <label htmlFor="wd-due-date" className="form-label">Due</label>
-          <input id="wd-due-date" type="date" className="form-control" />
+          <input id="wd-due-date" type="date" className="form-control" defaultValue={assignment.until}/>
         </div>
       </div>
       <div className="row mb-3">
         <div className="col-md-6">
           <label htmlFor="wd-available-from" className="form-label">Available From</label>
-          <input id="wd-available-from" type="date" className="form-control" />
+          <input id="wd-available-from" type="date" className="form-control" defaultValue={assignment.from}/>
         </div>
         <div className="col-md-6">
           <label htmlFor="wd-available-until" className="form-label">Until</label>
-          <input id="wd-available-until" type="date" className="form-control" />
+          <input id="wd-available-until" type="date" className="form-control" defaultValue={assignment.until}/>
         </div>
       </div>
       <div className="text-end">
