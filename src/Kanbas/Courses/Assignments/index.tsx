@@ -1,6 +1,7 @@
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { FaSearch, FaPlus } from "react-icons/fa";
 import { MdAssignment } from "react-icons/md";
+import { useSelector, useDispatch } from "react-redux";
 import assignmentsData from "../../Database/assignments.json";
 
 export default function Assignments() {

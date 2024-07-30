@@ -6,7 +6,7 @@ import assignmentsData from "../../Database/assignments.json";
 import gradesData from "../../Database/grades.json";
 
 export default function Grades() {
-  const { cid } = useParams<{ cid: string }>();
+  const { cid } = useParams();
 
   const enrolled = enrollmentsData
     .filter(enrollment => enrollment.course === cid)
