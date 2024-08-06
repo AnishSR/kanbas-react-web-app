@@ -4,7 +4,9 @@ import { MdAssignment } from "react-icons/md";
 import { useSelector, useDispatch } from "react-redux";
 import { AiFillDelete } from "react-icons/ai";
 import assignmentsData from "../../Database/assignments.json";
-import { deleteAssignment } from "./reducer";
+import { setAssignments, deleteAssignment, addAssignment, updateAssignment } from "./reducer";
+import * as client from "./client";
+import { useState, useEffect } from "react";
 
 export default function Assignments() {
   const { cid } = useParams();
@@ -12,9 +14,27 @@ export default function Assignments() {
   const dispatch = useDispatch();
   const assignments = useSelector((state: any) => state.assignmentsReducer.assignments.filter((assignment: any) => assignment.course === cid));
 
+
+ 
+
+  const removeAssignment = async (assignmentId: string) => {
+    await client.deleteAssignment(assignmentId);
+    dispatch(deleteAssignment(assignmentId));
+  };
+
+  const fetchAssignments = async () => {
+    const assignments = await client.findAssignmentsForCourse(cid as string);
+    dispatch(setAssignments(assignments));
+  };
+  useEffect(() => {
+    fetchAssignments();
+  }, []);
+
+
   const handleDelete = (assignmentId: string) => {
     if (window.confirm("Are you sure you want to delete this assignment?")) {
-      dispatch(deleteAssignment(assignmentId));
+      //dispatch(deleteAssignment(assignmentId));
+      removeAssignment(assignmentId);
     }
   };
 
