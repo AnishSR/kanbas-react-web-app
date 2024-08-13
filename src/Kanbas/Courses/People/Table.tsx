@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from "react";
 import * as client from "./client";
 import PeopleDetails from "./Details";
-import { Link } from "react-router-dom";
+import { Link , useParams} from "react-router-dom";
 import { FaPlus } from "react-icons/fa";
 export default function PeopleTable() {
 
   const [users, setUsers] = useState<any[]>([]);
   const [role, setRole] = useState("");
   const [name, setName] = useState("");
+  const {cid} = useParams();
   const createUser = async () => {
     const user = await client.createUser({
       firstName: "New",
@@ -71,7 +72,7 @@ export default function PeopleTable() {
           {users.map((user: any) => (
             <tr key={user._id}>
               <td className="wd-full-name text-nowrap">
-              <Link to={`/Kanbas/Courses/${user.courseId}/People/${user._id}`}>
+              <Link to={`/Kanbas/Courses/${cid}/People/${user._id}`}>
                 <span className="wd-first-name">{user.firstName}</span>
                 <span className="wd-last-name">{user.lastName}</span>
                 </Link>
