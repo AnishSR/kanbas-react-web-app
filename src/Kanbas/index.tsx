@@ -21,7 +21,7 @@ export default function Kanbas() {
   }, []);
 
   const [course, setCourse] = useState<any>({
-    _id: "1234", name: "New Course", number: "New Number",
+    _id: null, name: "New Course", number: "New Number",
     startDate: "2023-09-10", endDate: "2023-12-15", description: "New Description",
     image: "/images/reactjs.jpg",
   });
@@ -38,6 +38,10 @@ export default function Kanbas() {
   };
 
   const updateCourse = async () => {
+    if (!course._id) {
+      alert("Please select a course to update.");
+      return;
+    }
     await client.updateCourse(course);
     setCourses(
       courses.map((c) => {
