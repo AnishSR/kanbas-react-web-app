@@ -14,6 +14,7 @@ import { Navigate, Route, Routes, useParams, useLocation } from "react-router";
 import { FaAlignJustify } from "react-icons/fa";
 import QuizDetails from "./Quizzes/QuizDetails";
 import QuizQuestions from "./Quizzes/QuizQuestions";
+import QuizPreview from "./Quizzes/QuizPreview";
 export default function Courses({ courses }: { courses: any[]; }) {
   const { cid } = useParams();
   const course = courses.find((course) => course._id === cid);
@@ -42,6 +43,8 @@ export default function Courses({ courses }: { courses: any[]; }) {
           <Route path="Quizzes/:qid" element={<QuizDetails />} />
           <Route path="Quizzes/:qid/edit/*" element={<QuizEditor />} />
           <Route path="Quizzes/:qid/questions" element={<QuizQuestions />} />
+          <Route path="Quizzes/:qid/preview" element={<QuizPreview />} />
+          <Route path="Quizzes/:qid/take" element={<QuizPreview />} />
         </Routes>
       </div>
     </div>

@@ -12,8 +12,17 @@ export default function Quizzes() {
   const { cid } = useParams();
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const quizzes = useSelector((state: any) => state.quizReducer.quizzes.filter((quiz: any) => quiz.course === cid));
+  //const quizzes = useSelector((state: any) => state.quizReducer.quizzes.filter((quiz: any) => quiz.course === cid));
   const user = useSelector((state: any) => state.accountReducer.currentUser); 
+    const quizzes = useSelector((state: any) => {
+    const allQuizzes = state.quizReducer.quizzes.filter(
+      (quiz: any) => quiz.course === cid
+    );
+  
+    return user.role === "STUDENT"
+      ? allQuizzes.filter((quiz: any) => quiz.published)
+      : allQuizzes;
+  });
 
   function formatDate(dateString: string): string {
     const date = new Date(dateString);
@@ -81,10 +90,11 @@ export default function Quizzes() {
             className="form-control border-start-0"
             placeholder="Search for Quizzes"
           />
+          {user.role !== "STUDENT" && (
           <button id="wd-add-quiz" className="btn btn-danger" onClick={() => navigate(`/Kanbas/Courses/${cid}/Quizzes/new/edit`)}>
             <FaPlus className="me-2" />
             Quiz
-          </button>
+          </button>)}
         </div>
       </div>
       <h3 id="wd-quizzes-title" className="mb-3">

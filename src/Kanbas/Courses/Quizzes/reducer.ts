@@ -32,32 +32,37 @@ const quizzesSlice = createSlice({
     addQuestion: (state, { payload: { quizId, question } }) => {
       state.quizzes = state.quizzes.map((q: any) =>
         q._id === quizId
-          ? { ...q, questions: [...q.questions, question] }
+          ? { ...q, questions: [...(q.questions || []), question] }
           : q
       ) as any;
     },
+    
+  
     updateQuestion: (state, { payload: { quizId, question } }) => {
       state.quizzes = state.quizzes.map((q: any) =>
         q._id === quizId
           ? {
               ...q,
               questions: q.questions.map((qstn: any) =>
-                qstn.id === question.id ? question : qstn
+                qstn._id === question._id ? question : qstn
               ),
             }
           : q
       ) as any;
+      console.log('State after updating question:', state.quizzes);
     },
     deleteQuestion: (state, { payload: { quizId, questionId } }) => {
       state.quizzes = state.quizzes.map((q: any) =>
         q._id === quizId
           ? {
               ...q,
-              questions: q.questions.filter((qstn: any) => qstn.id !== questionId),
+              questions: q.questions.filter((qstn: any) => qstn._id !== questionId),
             }
           : q
-      ) as any;
+      )as any;
+      console.log('State after deleting question:', state.quizzes);
     },
+
   },
 });
 

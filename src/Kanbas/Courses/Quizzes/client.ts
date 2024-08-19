@@ -26,9 +26,17 @@ export const findQuizzesForCourse = async (courseId: string) => {
 
 
 export const addQuestion = async (quizId: string, question: any) => {
-    const response = await axios.post(`${QUIZZES_API}/${quizId}/questions`, question);
-    return response.data;
+    try {
+        console.log('Sending question data to server:', question);
+        const response = await axios.post(`${QUIZZES_API}/${quizId}/questions`, question);
+        console.log('Response from server after adding question:', response.data);
+        return response.data;
+    } catch (error) {
+        console.error('Error adding question:', error);
+        throw error; 
+    }
 };
+
 
 export const updateQuestion = async (quizId: string, questionId: string, question: any) => {
     const response = await axios.put(`${QUIZZES_API}/${quizId}/questions/${questionId}`, question);
@@ -39,3 +47,19 @@ export const deleteQuestion = async (quizId: string, questionId: string) => {
     const response = await axios.delete(`${QUIZZES_API}/${quizId}/questions/${questionId}`);
     return response.data;
 };
+
+export const getUserAnswers = async (quizId: string, userId: string) => {
+    try {
+      const response = await axios.get(`${QUIZZES_API}/${quizId}/answers/${userId}`);
+      return response.data;
+    } catch (error) {
+      console.error('Error fetching user answers:', error);
+      throw error;
+    }
+  };
+
+export const submitQuiz = async (quizId: string, userId: string, answers: any) => {
+  const response = await axios.post(`${QUIZZES_API}/${quizId}/answers`, { userId, answers });
+  return response.data;
+};
+

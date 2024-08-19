@@ -6,6 +6,7 @@ export default function QuizDetails() {
   const { cid, qid } = useParams();
   const navigate = useNavigate();
   const quizzes = useSelector((state: any) => state.quizReducer.quizzes);
+  const user = useSelector((state: any) => state.accountReducer.currentUser); // Get current user
   const quiz = quizzes.find((quiz: any) => quiz._id === qid);
 
   if (!quiz) {
@@ -32,12 +33,31 @@ export default function QuizDetails() {
       <p><strong>Available From:</strong> {quiz.availableFrom}</p>
       <p><strong>Available Until:</strong> {quiz.availableUntil}</p>
 
-      <button
-        className="btn btn-primary"
-        onClick={() => navigate(`/Kanbas/Courses/${cid}/Quizzes/${qid}/edit`)}
-      >
-        Edit Quiz
-      </button>
+      {user.role === "FACULTY" ? (
+        <>
+          <button
+            className="btn btn-primary"
+            onClick={() => navigate(`/Kanbas/Courses/${cid}/Quizzes/${qid}/edit`)}
+          >
+            Edit Quiz
+          </button>
+          <button
+            className="btn btn-secondary"
+            onClick={() => navigate(`/Kanbas/Courses/${cid}/Quizzes/${qid}/preview`)}
+          >
+            Preview Quiz
+          </button>
+        </>
+      ) : (
+        user.role === "STUDENT" && quiz.published && (
+          <button
+            className="btn btn-success"
+            onClick={() => navigate(`/Kanbas/Courses/${cid}/Quizzes/${qid}/take`)}
+          >
+            Take Quiz
+          </button>
+        )
+      )}
     </div>
   );
 }
