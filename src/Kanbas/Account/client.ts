@@ -20,5 +20,12 @@ export const signout = async () => {
   return response.data;
 };
 
+export const updateProfile = async (profile: any) => {
+  const response = await axiosWithCredentials.put(`${USERS_API}/profile`, profile);
+  return response.data;
+};
+
+
+
   
   

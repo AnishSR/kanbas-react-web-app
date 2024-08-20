@@ -13,6 +13,24 @@ export default function QuizDetails() {
     return <p>Quiz not found.</p>;
   }
 
+  const handleTakeQuiz = () => {
+    if (user.role === "STUDENT") {
+        const userAttempts = quiz.scores.find(
+            (score: any) => score.studentId === user._id
+        )?.userAttempts || 0;
+
+        console.log("User attempts:", userAttempts);
+        console.log("Quiz attempt limit:", quiz.attemptLimit);
+
+        if (userAttempts >= quiz.attemptLimit) {
+            alert("You have already reached the maximum number of attempts for this quiz.");
+            return;
+        }
+
+        navigate(`/Kanbas/Courses/${cid}/Quizzes/${qid}/take`);
+    }
+};
+
   return (
     <div id="wd-quiz-details" className="p-4">
       <h3>Quiz Details</h3>
@@ -52,7 +70,7 @@ export default function QuizDetails() {
         user.role === "STUDENT" && quiz.published && (
           <button
             className="btn btn-success"
-            onClick={() => navigate(`/Kanbas/Courses/${cid}/Quizzes/${qid}/take`)}
+            onClick={handleTakeQuiz}
           >
             Take Quiz
           </button>

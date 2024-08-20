@@ -70,10 +70,13 @@ export default function Quizzes() {
       removeQuiz(quizId);
     }
   };
-  const getScoreForStudent = (quiz: any) => {
+   const getScoreForStudent = (quiz: any) => {
     if (!user || user.role !== "STUDENT") return null;
     const studentScores = quiz.scores && Array.isArray(quiz.scores) ? quiz.scores : [];
-    const studentScore = studentScores.find((score: any) => score.studentId === user._id);
+    const studentScore = studentScores
+      .filter((score: any) => score.studentId === user._id)
+      .sort((a: any, b: any) => new Date(b.submittedAt).getTime() - new Date(a.submittedAt).getTime())[0];
+
     return studentScore ? studentScore.score : "No attempts made";
   };
 
@@ -125,6 +128,7 @@ export default function Quizzes() {
               </p>
             )}
             </div>
+            {user.role === "FACULTY" && ( 
             <div className="d-flex align-items-center">
               <span
                 className="me-3"
@@ -163,6 +167,7 @@ export default function Quizzes() {
                 </ul>
               </div>
             </div>
+            )}
           </li>
         ))}
       </ul>

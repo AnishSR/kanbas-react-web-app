@@ -35,6 +35,7 @@ export default function QuizEditor() {
   const [availableFrom, setAvailableFrom] = useState(quiz ? formatDate(quiz.availableFrom) : "");
   const [availableUntil, setAvailableUntil] = useState(quiz ? formatDate(quiz.availableUntil) : "");
   const [dueDate, setDueDate] = useState(quiz ? formatDate(quiz.dueDate) : "");
+  const [attemptLimit, setAttemptLimit] = useState(quiz ? quiz.attemptLimit : 1);
 
   const saveQuiz = async (quiz: any) => {
     if (!qid) {
@@ -61,6 +62,7 @@ export default function QuizEditor() {
       shuffleAnswers,
       timeLimitEntry: timeLimit,
       allowMultipleAttempts,
+      attemptLimit,
       showCorrectedAnswers,
       accessCodeEntry: accessCode,
       oneQuestionAtATime,
@@ -166,6 +168,18 @@ export default function QuizEditor() {
           <option value="Yes">Yes</option>
         </select>
       </div>
+      {allowMultipleAttempts && (
+      <div className="mb-3">
+        <label className="form-label">Attempt Limit</label>
+        <input
+          type="number"
+          className="form-control"
+          value={attemptLimit}
+          onChange={(e) => setAttemptLimit(parseInt(e.target.value) || 1)}
+          min="1"
+        />
+      </div>
+       )}
       <div className="mb-3">
         <label className="form-label">Show Corrected Answers</label>
         <select

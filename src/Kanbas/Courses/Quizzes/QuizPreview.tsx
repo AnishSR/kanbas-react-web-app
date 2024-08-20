@@ -63,6 +63,7 @@ export default function QuizPreview() {
 
             const calculatedScore = await client.submitQuiz(qid!, user._id, formattedAnswers);
             setScore(calculatedScore);
+            navigate(`/Kanbas/Courses/${cid}/Quizzes`);
         } catch (error) {
             console.error("Failed to submit quiz:", error);
         }

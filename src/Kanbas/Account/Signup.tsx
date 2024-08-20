@@ -6,7 +6,7 @@ import { setCurrentUser } from "./reducer";
 export default function Signup() {
     const dispatch = useDispatch();
   const [error, setError] = useState("");
-  const [user, setUser] = useState<any>({});
+  const [user, setUser] = useState<any>({ role: "STUDENT" }); // Default to STUDENT
   const navigate = useNavigate();
   const signup = async () => {
     try {
@@ -19,15 +19,32 @@ export default function Signup() {
   };
 
   return (
-    <div className="wd-signup-screen">
-      <h1>Sign up</h1>
-      {error && <div className="wd-error alert alert-danger">{error}</div>}
-      <input value={user.username} onChange={(e) => setUser({ ...user, username: e.target.value })}
-             className="wd-username form-control mb-2" placeholder="username" />
-      <input value={user.password} onChange={(e) => setUser({ ...user, password: e.target.value })} type="password"
-             className="wd-password form-control mb-2" placeholder="password" />
-      <button onClick={signup} className="wd-signup-btn btn btn-primary mb-2"> Sign up </button><br />
-      <Link to="/Kanbas/Account/Signin" className="wd-signin-link">Sign in</Link>
-    </div>
-  );
+        <div className="wd-signup-screen">
+            <h1>Sign up</h1>
+            {error && <div className="wd-error alert alert-danger">{error}</div>}
+            <input
+                value={user.username}
+                onChange={(e) => setUser({ ...user, username: e.target.value })}
+                className="wd-username form-control mb-2"
+                placeholder="Username"
+            />
+            <input
+                value={user.password}
+                onChange={(e) => setUser({ ...user, password: e.target.value })}
+                type="password"
+                className="wd-password form-control mb-2"
+                placeholder="Password"
+            />
+            <select
+                value={user.role}
+                onChange={(e) => setUser({ ...user, role: e.target.value })}
+                className="wd-role form-control mb-2"
+            >
+                <option value="STUDENT">Student</option>
+                <option value="FACULTY">Faculty</option>
+            </select>
+            <button onClick={signup} className="wd-signup-btn btn btn-primary mb-2">Sign up</button><br />
+            <Link to="/Kanbas/Account/Signin" className="wd-signin-link">Sign in</Link>
+        </div>
+    );
 }
