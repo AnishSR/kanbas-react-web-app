@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import * as db from "../Database";
+import { useSelector } from "react-redux";
 export default function Dashboard(
   { courses, course, setCourse, addNewCourse,
   deleteCourse, updateCourse }: {
@@ -9,8 +10,11 @@ export default function Dashboard(
   updateCourse: () => void; }) 
   
   {
+  const user = useSelector((state: any) => state.accountReducer.currentUser); 
   return (
     <div id="wd-dashboard">
+      {user.role === "FACULTY" && (
+      <>
       <h1 id="wd-dashboard-title">Dashboard</h1> <hr />
       <h5>New Course  <button className="btn btn-primary float-end"
                       id="wd-add-new-course-click"
@@ -24,7 +28,8 @@ export default function Dashboard(
         onChange={(e) => setCourse({ ...course, name: e.target.value }) } />
       <textarea value={course.description} className="form-control"
         onChange={(e) => setCourse({ ...course, description: e.target.value }) } />
-      
+      </>
+      )}  
 
       
 
@@ -45,6 +50,8 @@ export default function Dashboard(
                       {course.description}
                     </p>
                     <Link to={`/Kanbas/Courses/${course._id}/Home`} className="btn btn-primary">Go</Link>
+                    {user.role === "FACULTY" && (
+                    <>
                     <button onClick={(event) => {
                       event.preventDefault();
                       deleteCourse(course._id);
@@ -60,7 +67,8 @@ export default function Dashboard(
                       className="btn btn-warning me-2 float-end" >
                       Edit
                     </button>
-
+                    </>
+                    )}
 
                   </div>
                 </div>
