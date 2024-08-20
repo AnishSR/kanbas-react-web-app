@@ -110,9 +110,11 @@ export default function Profile() {
               <option value="STUDENT">Student</option>
             </select>
           </div>
+          {/*
           <button onClick={saveProfile} className="wd-save-btn btn btn-primary w-100">
             Save
           </button>
+          */}
           <button onClick={signout} className="wd-signout-btn btn btn-danger w-100">
             Sign out
           </button>
